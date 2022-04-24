@@ -47,7 +47,6 @@ A continuación se enumeran los requisitos mínimos para ejecutar el proyecto:
 
 * Desde la raiz del proyecto, inicializar DOCKER  -->  .\init.sh
 * verificar que esten levantados los contenedores  --> docker ps
-    * 
     ```
     CONTAINER ID   IMAGE                        COMMAND                  CREATED              STATUS              PORTS                           NAMES
     2896d33ba4b2   idealista-hexagonal_apache   "/bin/sh -c 'apachec…"   59 seconds ago       Up 57 seconds       443/tcp, 0.0.0.0:8003->80/tcp   sf4_apache    
