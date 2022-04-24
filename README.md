@@ -46,6 +46,15 @@ A continuación se enumeran los requisitos mínimos para ejecutar el proyecto:
 ### Ejecutar api
 
 * Desde la raiz del proyecto, inicializar DOCKER  -->  .\init.sh
+* verificar que esten levantados los contenedores  --> docker ps
+    * 
+    ```
+    CONTAINER ID   IMAGE                        COMMAND                  CREATED              STATUS              PORTS                           NAMES
+    2896d33ba4b2   idealista-hexagonal_apache   "/bin/sh -c 'apachec…"   59 seconds ago       Up 57 seconds       443/tcp, 0.0.0.0:8003->80/tcp   sf4_apache    
+    3c0ba27b742f   phpmyadmin/phpmyadmin        "/docker-entrypoint.…"   About a minute ago   Up 58 seconds       0.0.0.0:8080->80/tcp            sf4_phpmyadmin
+    d77a5cb1f0a4   idealista-hexagonal_php      "docker-php-entrypoi…"   About a minute ago   Up 58 seconds       9000/tcp                        sf4_php
+    99dc12c404a9   idealista-hexagonal_mysql    "docker-entrypoint.s…"   About a minute ago   Up About a minute   3306/tcp, 33060/tcp             sf4_mysql
+    ```
 * Abrir un tty  -->  \idealista-hexagonal> docker exec -it sf4_php  bash
 * Instalar dependecias  -->  /home/wwwroot/sf4# composer install
 * Ejecutar phpunit  -->  /home/wwwroot/sf4# ./vendor/bin/simple-phpunit
