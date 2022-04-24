@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\Picture" table="pictures">
+        <id name="id" type="integer" column="id" />
+
+        <field name="url" column="url" type="string"  nullable="true" unique="false" />
+        <field name="quality" column="quality" type="string" nullable="true" unique="false" />
+    </entity>
+
+</doctrine-mapping>

@@ -1,0 +1,45 @@
+version: '3'
+services:
+    apache:
+        build: ./build/apache
+        container_name: sf4_apache
+        ports:
+          - 8003:80
+        volumes:
+          - ./build/config/vhosts:/etc/apache2/sites-enabled
+          - .:/home/wwwroot/sf4
+        depends_on:
+          - php
+
+    php:
+        build: ./build/php
+        container_name: sf4_php
+        volumes:
+          - .:/home/wwwroot/sf4
+        depends_on:
+          - mysql
+
+    mysql:
+        build: ./build/mysql
+        container_name: sf4_mysql
+        volumes:
+          - ./build/data:/var/lib/mysql
+          - ./build/db/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+          - MYSQL_ROOT_PASSWORD=root
+          - MYSQL_DATABASE=sf4
+          - MYSQL_USER=sf4
+          - MYSQL_PASSWORD=sf4
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: sf4_phpmyadmin
+        environment:
+          PMA_HOST: mysql
+          PMA_PORT: 3306
+        ports:
+            - 8080:80
+        links:
+            - mysql
