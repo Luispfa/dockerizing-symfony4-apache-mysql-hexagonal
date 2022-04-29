@@ -25,6 +25,10 @@ services:
         resource: '../api/Controller/'
         tags: ['controller.service_arguments']
 
+    Api\Command\:
+        resource: '../api/Command'
+        tags: ['console.command']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
@@ -58,5 +62,9 @@ services:
         public: true
 
     Api\Controller\GetAdFinderController:
+        arguments: ['@ad_finder_query'] 
+        public: true
+
+    Api\Command\AdFinderCommand:
         arguments: ['@ad_finder_query'] 
         public: true
