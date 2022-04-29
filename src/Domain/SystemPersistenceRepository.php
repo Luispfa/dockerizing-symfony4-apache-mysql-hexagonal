@@ -9,4 +9,6 @@ interface SystemPersistenceRepository
     public function getAds(): array;
 
     public function getPictures(): array;
+
+    public function searchAd(AdId $id): Ad;
 }

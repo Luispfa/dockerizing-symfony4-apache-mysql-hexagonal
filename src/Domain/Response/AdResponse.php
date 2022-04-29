@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Domain;
+namespace App\Domain\Response;
 
+use App\Domain\Ad;
+use App\Domain\AdId;
+use App\Domain\AdTypology;
 use DateTimeImmutable;
 
 final class AdResponse
@@ -11,8 +14,8 @@ final class AdResponse
     private  $id, $typology, $description, $pictures, $houseSize, $gardenSize, $score, $irrelevantSince;
 
     public function __construct(
-        int $id,
-        String $typology,
+        AdId $id,
+        AdTypology $typology,
         String $description,
         array $pictures,
         int $houseSize,
@@ -33,8 +36,8 @@ final class AdResponse
     public function __invoke(): array
     {
         return [
-            'id' => $this->id,
-            'typology' => $this->typology,
+            'id' => $this->id->value(),
+            'typology' => $this->typology->value(),
             'description' => $this->description,
             'pictures' => $this->pictures,
             'houseSize' => $this->houseSize,

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Api\Controller;
 
 use App\Application\CalculateScore;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-final class CalculateScoreController
+final class GetCalculateScoreController
 {
     private $calculate;
 
@@ -18,9 +18,9 @@ final class CalculateScoreController
     }
 
     /**
-     * @Route("/calculate-score", name="calculate-score")
+     * @Route("/calculate-score", name="calculate-score", methods={"GET"})
      */
-    public function calculateScore(): JsonResponse
+    public function getCalculateScore(): JsonResponse
     {
         return new JsonResponse($this->calculate->__invoke()->ads());
     }

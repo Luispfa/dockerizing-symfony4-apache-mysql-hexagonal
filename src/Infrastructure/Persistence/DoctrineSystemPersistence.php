@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Infrastructure\Persistence;
 
 use App\Domain\Ad;
+use App\Domain\AdId;
 use App\Domain\Picture;
 use App\Domain\SystemPersistenceRepository;
 use App\Infrastructure\Persistence\Doctrine\DoctrineRepository;
@@ -13,12 +14,16 @@ class DoctrineSystemPersistence extends DoctrineRepository implements SystemPers
 {
     public function getAds(): array
     {
-
-        return $this->searchAll(Ad::class);
+        return $this->repository(Ad::class)->findAll();
     }
 
     public function getPictures(): array
     {
-        return $this->searchAll(Picture::class);
+        return $this->repository(Picture::class)->findAll();
+    }
+
+    public function searchAd(AdId $id): Ad
+    {
+        return $this->repository(Ad::class)->find($id);
     }
 }

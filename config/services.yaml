@@ -48,3 +48,15 @@ services:
     App\Application\QualityListing:
         arguments: ['@system_repository'] 
         public: true
+
+    App\Application\AdFinder:
+        arguments: ['@system_repository'] 
+        public: true
+
+    ad_finder_query:
+        class: App\Application\Bus\Query\AdFinderQueryHandler
+        public: true
+
+    Api\Controller\GetAdFinderController:
+        arguments: ['@ad_finder_query'] 
+        public: true

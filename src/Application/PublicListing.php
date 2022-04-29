@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application;
 
-use App\Domain\AdResponse;
-use App\Domain\AdsResponse;
 use App\Domain\PubicAd;
+use App\Domain\Response\AdResponse;
+use App\Domain\Response\AdsResponse;
 use App\Domain\ScoreAd;
 use App\Domain\SystemPersistenceRepository;
 use function Lambdish\Phunctional\map as PhunctionalMap;

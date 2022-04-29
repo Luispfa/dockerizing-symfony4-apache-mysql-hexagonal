@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Application;
 
-use App\Domain\Response\AdResponse;
+use App\Domain\AdId;
 use App\Domain\Response\AdsResponse;
-use App\Domain\ScoreAd;
+use App\Domain\Response\AdResponse;
 use App\Domain\SystemPersistenceRepository;
 use function Lambdish\Phunctional\map as PhunctionalMap;
 
-final class CalculateScore
+final class AdFinder
 {
     private $repository;
 
@@ -19,10 +19,10 @@ final class CalculateScore
         $this->repository = $repository;
     }
 
-    public function __invoke(): AdsResponse
+    public function __invoke(AdId $id): AdsResponse
     {
-        $scoreAd = new ScoreAd($this->repository->getAds(), $this->repository->getPictures());
-
-        return new AdsResponse(...PhunctionalMap(AdResponse::toResponse(), $scoreAd->calculate()));
+        $ad = $this->repository->searchAd($id);
+        
+        return new AdsResponse(...PhunctionalMap(AdResponse::toResponse(), [$ad]));
     }
 }
