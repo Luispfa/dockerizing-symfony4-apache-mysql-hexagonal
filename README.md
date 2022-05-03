@@ -1,5 +1,75 @@
 # dockerizing-symfony4-apache-mysql-hexagonal
 
+### Start
+
+* Desde la raiz del proyecto, inicializar DOCKER
+    ```
+    \symfony4-apache-mysql-hexagonal> .\init.sh
+    ```
+* verificar que esten levantados los contenedores
+    ```
+     \symfony4-apache-mysql-hexagonal> docker ps
+    ```
+
+```
+CONTAINER ID   IMAGE                                               COMMAND                  CREATED      STATUS        PORTS                 NAMES
+da5dcc00a9ca   dockerizing-symfony4-apache-mysql-hexagonal_mysql   "docker-entrypoint.s…"   3 days ago   Up 1 second   3306/tcp, 33060/tcp   sf4_mysql
+PS C:\Users\Luis Flores\proyectos\dockerizing-symfony4-apache-mysql-hexagonal> docker ps
+CONTAINER ID   IMAGE                                                COMMAND                  CREATED      STATUS          PORTS
+            NAMES
+94a4cfab69b3   dockerizing-symfony4-apache-mysql-hexagonal_apache   "/bin/sh -c 'apachec…"   3 days ago   Up 4 seconds    443/tcp, 0.0.0.0:8003->80/tcp   sf4_apache
+c827707f87d6   phpmyadmin/phpmyadmin                                "/docker-entrypoint.…"   3 days ago   Up 6 seconds    0.0.0.0:8080->80/tcp            sf4_phpmyadmin
+e3a118594715   dockerizing-symfony4-apache-mysql-hexagonal_php      "docker-php-entrypoi…"   3 days ago   Up 6 seconds    9000/tcp
+            sf4_php
+da5dcc00a9ca   dockerizing-symfony4-apache-mysql-hexagonal_mysql    "docker-entrypoint.s…"   3 days ago   Up 13 seconds   3306/tcp, 33060/tcp 
+            sf4_mysql
+```
+* Abrir un tty
+```
+\symfony4-apache-mysql-hexagonal> docker exec -it sf4_php  bash
+```
+* Instalar dependecias
+```
+/var/www/sf4# composer install
+```
+* Ejecutar phpunit
+```
+/var/www/sf4# ./vendor/bin/simple-phpunit
+```
+* Via API
+    * Endpoint 1 : http://localhost:8003/calculate-score
+    * Endpoint 2 : http://localhost:8003/public-listing
+    * Endpoint 3 : http://localhost:8003/quality-listing
+    * Endpoint 4 : http://localhost:8003/get-ad/2
+    * phpMyAdmin : http://localhost:8080/
+
+* Via Console Commands
+    * Open a tty: docker exec -it sf4_php  bash
+    * Execute:
+        * command 1 : php bin/console app:calculate-score
+        * command 2 : php bin/console app:get-ad 2 
+
+### Considerations 
+* src\Infrastructure\Persistence\InFileSystemPersistence.php
+    * Los datos son obtenidos desde una clase PHP
+* src\Infrastructure\Persistence\DoctrineSystemPersistence.php
+    * Los datos son obtenidos desde una Base de datos
+
+* Para probar cada repositorio, basta con cambiar el respositorio que se inyectará a cada endPoint
+    * debemos ir a : services.yaml
+    * para usar InFileSystemPersistence
+    ```
+         system_repository:
+            class: App\Infrastructure\Persistence\InFileSystemPersistence
+            public: true
+    ```
+    * para usar DoctrineSystemPersistence
+    ```
+        system_repository:
+            class: App\Infrastructure\Persistence\DoctrineSystemPersistence
+            public: true
+    ```
+
 # Reto: Servicio para gestión de calidad de los anuncios
 
 ## Historias de usuario
@@ -20,45 +90,5 @@
 
 A continuación se enumeran los requisitos mínimos para ejecutar el proyecto:
 
-* PHP 8
-* Symfony Local Web Server o Nginx.
-
-### Este ejemplo esta elaborado con dos tipos de Repositorios
-* src\Infrastructure\Persistence\InFileSystemPersistence.php
-    *   Los datos son obtenidos desde un ARRAY
-* src\Infrastructure\Persistence\DoctrineSystemPersistence.php
-    * os datos son obtenidos desde una Base de datos
-
-* Para probar cada repositorio, basta con cambiar el respositorio que se inyectará a cada endPoint
-    * debemos ir a : services.yaml
-    * para usar InFileSystemPersistence
-    ```
-         system_repository:
-            class: App\Infrastructure\Persistence\InFileSystemPersistence
-            public: true
-    ```
-    * para usar DoctrineSystemPersistence
-    ```
-        system_repository:
-            class: App\Infrastructure\Persistence\DoctrineSystemPersistence
-            public: true
-    ```
-### Ejecutar api
-
-* Desde la raiz del proyecto, inicializar DOCKER  -->  \idealista-hexagonal> .\init.sh
-* verificar que esten levantados los contenedores  --> \idealista-hexagonal> docker ps
-    ```
-    CONTAINER ID   IMAGE                        COMMAND                  CREATED              STATUS              PORTS                           NAMES
-    2896d33ba4b2   idealista-hexagonal_apache   "/bin/sh -c 'apachec…"   59 seconds ago       Up 57 seconds       443/tcp, 0.0.0.0:8003->80/tcp   sf4_apache    
-    3c0ba27b742f   phpmyadmin/phpmyadmin        "/docker-entrypoint.…"   About a minute ago   Up 58 seconds       0.0.0.0:8080->80/tcp            sf4_phpmyadmin
-    d77a5cb1f0a4   idealista-hexagonal_php      "docker-php-entrypoi…"   About a minute ago   Up 58 seconds       9000/tcp                        sf4_php
-    99dc12c404a9   idealista-hexagonal_mysql    "docker-entrypoint.s…"   About a minute ago   Up About a minute   3306/tcp, 33060/tcp             sf4_mysql
-    ```
-* Abrir un tty  -->  \idealista-hexagonal> docker exec -it sf4_php  bash
-* Instalar dependecias  -->  /home/wwwroot/sf4# composer install
-* Ejecutar phpunit  -->  /home/wwwroot/sf4# ./vendor/bin/simple-phpunit
-
-* Endpoint 1 : http://localhost:8003/calculate-score
-* Endpoint 2 : http://localhost:8003/public-listing
-* Endpoint 3 : http://localhost:8003/quality-listing
-
+* PHP 7
+* Symfony Local Web Server o Apache.
