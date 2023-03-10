@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Api\Command;
 
 use App\Application\CalculateScore;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CalculateScoreCommand extends Command
 {
@@ -38,11 +38,15 @@ class CalculateScoreCommand extends Command
             throw new \LogicException('This command accepts only an instance of "ConsoleOutputInterface".');
         }
 
-        $json = new JsonResponse($this->calculate->__invoke()->ads());
+        $calculate = $this->calculate->__invoke()->ads();
 
-        $section1 = $output->section();
+        $table = new Table($output);
+        $table->setHeaders(['id', 'typology',  'houseSize', 'gardenSize', 'score']);
+        foreach ($calculate as ['id' => $id, 'typology' => $typology, 'houseSize' => $houseSize, 'gardenSize' => $gardenSize, 'score' => $score]) {
+            $table->addRow([$id, $typology, $houseSize, $gardenSize, $score]);
+        }
+        $table->render();
 
-        $section1->writeln($json);
         return 0;
     }
 }
