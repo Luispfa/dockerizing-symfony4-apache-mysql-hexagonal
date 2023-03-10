@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Response;
+namespace App\Application\Response;
 
 final class AdsResponse
 {

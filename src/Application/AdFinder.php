@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Application;
 
 use App\Domain\AdId;
-use App\Domain\Response\AdsResponse;
-use App\Domain\Response\AdResponse;
+use App\Application\Response\AdsResponse;
+use App\Application\Response\AdResponse;
 use App\Domain\SystemPersistenceRepository;
 use function Lambdish\Phunctional\map as PhunctionalMap;
 
