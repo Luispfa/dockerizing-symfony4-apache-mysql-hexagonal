@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
+use App\Domain\Aggregate\AggregateRoot;
 use DateTimeImmutable;
 
-final class Ad
+final class Ad extends AggregateRoot
 {
     private  $id, $typology, $description, $pictures, $houseSize, $gardenSize, $score, $irrelevantSince;
     const RELEVANT_SCORE = 40;

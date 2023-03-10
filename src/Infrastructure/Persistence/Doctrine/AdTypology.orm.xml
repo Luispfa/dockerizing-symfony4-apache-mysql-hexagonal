@@ -3,6 +3,6 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 	
     <embeddable name="App\Domain\AdTypology">
-		<field name="value" type="string" column="typology" />
-	</embeddable>
+		  <field name="value" type="string" column="typology" />
+	  </embeddable>
 </doctrine-mapping>

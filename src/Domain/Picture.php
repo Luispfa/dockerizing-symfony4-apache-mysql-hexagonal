@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
-final class Picture
+use App\Domain\Aggregate\AggregateRoot;
+
+final class Picture extends AggregateRoot
 {
     private $id, $url, $quality;
 
