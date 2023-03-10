@@ -4,24 +4,26 @@ declare(strict_types=1);
 
 namespace App\Application;
 
-use App\Domain\AdId;
+use App\Application\Bus\Query\AdFinderQuery;
+use App\Application\Bus\Query\AdFinderQueryHandler;
 use App\Application\Response\AdsResponse;
 use App\Application\Response\AdResponse;
-use App\Domain\SystemPersistenceRepository;
 use function Lambdish\Phunctional\map as PhunctionalMap;
 
 final class AdFinder
 {
-    private $repository;
+    private $queryHandler;
 
-    public function __construct(SystemPersistenceRepository $repository)
+    public function __construct(AdFinderQueryHandler $queryHandler)
     {
-        $this->repository = $repository;
+        $this->queryHandler = $queryHandler;
     }
 
-    public function __invoke(AdId $id): AdsResponse
+    public function __invoke(int $id): AdsResponse
     {
-        $ad = $this->repository->searchAd($id);
+        $query = new AdFinderQuery($id);
+
+        $ad = $this->queryHandler->__invoke($query);
         
         return new AdsResponse(...PhunctionalMap(AdResponse::toResponse(), [$ad]));
     }

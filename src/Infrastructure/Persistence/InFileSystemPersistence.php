@@ -19,7 +19,7 @@ final class InFileSystemPersistence implements SystemPersistenceRepository
     public function __construct()
     {
         array_push($this->ads, new Ad(new AdId(1), new AdTypology('CHALET'), 'Este piso es una ganga, compra, compra, COMPRA!!!!! Este piso es una ganga, compra, compra, COMPRA!!!!!', [], 300, 150, null, null));
-        array_push($this->ads, new Ad(new AdId(2), new AdTypology('FLAT'), 'Nuevo Ático céntrico recién reformado. No deje pasar la oportunidad y adquiera este Ático de lujo', [4], 300, null, null, null));
+        array_push($this->ads, new Ad(new AdId(2), new AdTypology('FLAT'), 'Nuevo Ático céntrico recién reformado. No deje pasar la oportunidad y adquiera este Ático de lujo', [4], 333, null, null, null));
         array_push($this->ads, new Ad(new AdId(3), new AdTypology('CHALET'), '', [2], 300, null, null, null));
         array_push($this->ads, new Ad(new AdId(4), new AdTypology('FLAT'), 'Ático cèntrico muy luminoso y recién reformado, parece nuevo', [5], 300, null, null, null));
         array_push($this->ads, new Ad(new AdId(5), new AdTypology('FLAT'), 'Pisazo,', [3, 8], 300, null, null, null));
@@ -47,7 +47,7 @@ final class InFileSystemPersistence implements SystemPersistenceRepository
         return $this->pictures;
     }
 
-    public function searchAd(AdId $id): Ad
+    public function searchAd(AdId $id): ?Ad
     {
         return PhunctionalSearch(
             function (Ad $ad) use ($id) {

@@ -10,5 +10,5 @@ interface SystemPersistenceRepository
 
     public function getPictures(): array;
 
-    public function searchAd(AdId $id): Ad;
+    public function searchAd(AdId $id): ?Ad;
 }

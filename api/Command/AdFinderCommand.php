@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Api\Command;
 
-use App\Application\Bus\Query\AdFinderQuery;
-use App\Domain\Bus\Query\QueryHandler;
+use App\Application\AdFinder;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AdFinderCommand extends Command
 {
@@ -19,11 +18,11 @@ class AdFinderCommand extends Command
     protected static $defaultName = 'app:get-ad';
     protected static $defaultDescription = 'Get One Ad.';
 
-    private $queryHandler;
+    private $adFinder;
 
-    public function __construct(QueryHandler $queryHandler)
+    public function __construct(AdFinder $adFinder)
     {
-        $this->queryHandler = $queryHandler;
+        $this->adFinder = $adFinder;
         parent::__construct();
     }
 
@@ -41,13 +40,15 @@ class AdFinderCommand extends Command
         }
 
         $id = (int)$input->getArgument('id');
-        $query = $this->queryHandler;
-        $response = $query(new AdFinderQuery($id));
+        
+        $calculate = $this->adFinder->__invoke($id)->ads();
 
-        $json = new JsonResponse($response->ads());
-
-        $section1 = $output->section();
-        $section1->writeln($json);
+        $table = new Table($output);
+        $table->setHeaders(['id', 'typology',  'houseSize', 'gardenSize', 'score']);
+        foreach ($calculate as ['id' => $id, 'typology' => $typology, 'houseSize' => $houseSize, 'gardenSize' => $gardenSize, 'score' => $score]) {
+            $table->addRow([$id, $typology, $houseSize, $gardenSize, $score]);
+        }
+        $table->render();
 
         return 0;
     }

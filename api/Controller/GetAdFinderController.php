@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Api\Controller;
 
-use App\Application\Bus\Query\AdFinderQuery;
-use App\Domain\Bus\Query\QueryHandler;
+use App\Application\AdFinder;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 final class GetAdFinderController
 {
-    private $queryHandler;
+    private $adFinder;
 
-    public function __construct(QueryHandler $queryHandler)
+    public function __construct(AdFinder $adFinder)
     {
-        $this->queryHandler = $queryHandler;
+        $this->adFinder = $adFinder;
     }
 
     /**
@@ -24,8 +23,7 @@ final class GetAdFinderController
      */
     public function getAdFinder(Request $request): JsonResponse
     {
-        $query = $this->queryHandler;
-        $response = $query(new AdFinderQuery((int)$request->get('id')));
+        $response = $this->adFinder->__invoke((int)$request->get('id'));
 
         return new JsonResponse($response->ads());
     }
