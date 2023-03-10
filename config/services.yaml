@@ -37,9 +37,13 @@ services:
         public: true
 
     system_repository:
-        # class: App\Infrastructure\Persistence\InFileSystemPersistence
-        class: App\Infrastructure\Persistence\DoctrineSystemPersistence
+        class: App\Infrastructure\Persistence\InFileSystemPersistence
+        # class: App\Infrastructure\Persistence\DoctrineSystemPersistence
         public: true
+
+    App\Domain\SystemPersistenceRepository:
+        alias: App\Infrastructure\Persistence\InFileSystemPersistence
+        # alias: App\Infrastructure\Persistence\DoctrineSystemPersistence
 
     #
     # AdFinder
@@ -47,7 +51,7 @@ services:
     get_ad:
         class: App\Domain\GetAd
         arguments: ['@system_repository'] 
-        # tags: ['@orderRepository']s
+        tags: ['@SystemPersistenceRepository']
         public: true
 
     ad_finder_query_handler:
@@ -67,6 +71,55 @@ services:
     Api\Command\AdFinderCommand:
         arguments: ['@ad_finder'] 
         public: true
+
+    #
+    # AdAllFinder
+    #
+    get_all_ad:
+        class: App\Domain\GetAllAd
+        arguments: ['@system_repository'] 
+        tags: ['@SystemPersistenceRepository']
+        public: true
+
+    ad_all_finder_query_handler:
+        class: App\Application\Bus\Query\AdAllFinderQueryHandler
+        arguments: ['@get_all_ad'] 
+        public: true
+
+    ad_all_finder:
+        class: App\Application\AdAllFinder
+        arguments: ['@ad_all_finder_query_handler'] 
+        public: true
+
+    #
+    # ScoreCalculator
+    #
+    score_ad:
+        class: App\Domain\ScoreAd
+        arguments: ['@system_repository'] 
+        tags: ['@SystemPersistenceRepository']
+        public: true
+
+    score_calculator_command_handler:
+        class: App\Application\Bus\Command\ScoreCalculatorCommandHandler
+        arguments: ['@score_ad'] 
+        public: true
+
+    score_calculator:
+        class: App\Application\ScoreCalculator
+        arguments: ['@score_calculator_command_handler'] 
+        public: true
+
+    Api\Controller\GetcoreCalculaterController:
+        arguments: ['@score_calculator', '@ad_all_finder'] 
+        public: true
+
+    Api\Command\ScoreCalculaterCommand:
+        arguments: ['@score_calculator', '@ad_all_finder'] 
+        public: true
+
+
+
 
 
 

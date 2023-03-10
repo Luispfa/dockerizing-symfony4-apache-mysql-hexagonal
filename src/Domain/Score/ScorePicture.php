@@ -29,7 +29,7 @@ final class ScorePicture extends ScoreAbstract
 
             if ($pic->getQuality() == self::SD) {
                 $score = $score + self::DEFAULT_SCORE_SD;
-            } else if ($pic->getQuality() == self::HD) {
+            } elseif ($pic->getQuality() == self::HD) {
                 $score = $score + self::DEFAULT_SCORE_HD;
             }
         }

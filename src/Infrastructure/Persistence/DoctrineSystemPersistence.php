@@ -26,4 +26,9 @@ class DoctrineSystemPersistence extends DoctrineRepository implements SystemPers
     {
         return $this->repository(Ad::class)->find($id);
     }
+
+    public function updateScore(Ad $ad): void
+    {
+        $this->persist($ad);
+    }
 }

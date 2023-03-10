@@ -56,4 +56,14 @@ final class InFileSystemPersistence implements SystemPersistenceRepository
             $this->ads
         );
     }
+
+    public function updateScore(Ad $ad): void
+    {
+        foreach ($this->ads as $key => $o) {
+            if ($o->getId() == $ad->getId()) {
+                $this->ads[$key] = $ad;
+                return;
+            }
+        }
+    }
 }

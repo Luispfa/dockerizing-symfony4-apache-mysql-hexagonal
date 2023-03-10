@@ -8,29 +8,28 @@ use App\Domain\Score;
 
 final class ScoreAd
 {
-    private  $pictures, $ads;
+    private $repository;
 
-    public function __construct(array $ads, array $pictures)
+    public function __construct(SystemPersistenceRepository $repository)
     {
-        $this->ads = $ads;
-        $this->pictures = $pictures;
+        $this->repository = $repository;
     }
 
-    public function calculate(): array
+    public function __invoke(): void
     {
-        $array = [];
-        foreach ($this->ads as $ad) {
+        $ads = $this->repository->getAds();
+        foreach ($ads as $ad) {
             $score = $this->getScore($ad);
             $ad->setScore($score);
-            $array[] = $ad;
+            $this->repository->updateScore($ad);
         }
-
-        return $array;
     }
 
     private function getScore(Ad $ad): int
     {
-        $score = (new Score\ScorePicture($ad))->__invoke($this->pictures);
+        $pictures = $this->repository->getPictures();
+
+        $score = (new Score\ScorePicture($ad))->__invoke($pictures);
         $score += (new Score\ScoreDescription($ad))->__invoke();
         $score += (new Score\ScoreFlatDescription($ad))->__invoke();
         $score += (new Score\ScoreChaletDescription($ad))->__invoke();
