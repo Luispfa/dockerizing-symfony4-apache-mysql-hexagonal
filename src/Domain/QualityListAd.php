@@ -6,22 +6,22 @@ namespace App\Domain;
 
 use function Lambdish\Phunctional\filter as PhunctionalFilter;
 
-final class QualityAd
+final class QualityListAd
 {
-    private $ads;
+    private $repository;
 
-    public function __construct(array $ads)
+    public function __construct(SystemPersistenceRepository $repository)
     {
-        $this->ads = $ads;
+        $this->repository = $repository;
     }
 
-    public function listing(): array
+    public function __invoke(): array
     {
         return PhunctionalFilter(
             function (Ad $ad) {
                 return $ad->getScore() < Ad::RELEVANT_SCORE;
             },
-            $this->ads
+            $this->repository->getAds()
         );
     }
 }

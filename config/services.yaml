@@ -142,14 +142,25 @@ services:
         public: true
 
 
-
-
-    
-
-
-    App\Application\QualityListing:
+    #
+    # qualityLister
+    #
+    quality_list_ad:
+        class: App\Domain\QualityListAd
         arguments: ['@system_repository'] 
+        tags: ['@SystemPersistenceRepository']
         public: true
 
-   
-    
+    quality_lister_query_handler:
+        class: App\Application\Bus\Query\QualityListerQueryHandler
+        arguments: ['@quality_list_ad'] 
+        public: true
+
+    quality_lister:
+        class: App\Application\QualityLister
+        arguments: ['@quality_lister_query_handler'] 
+        public: true
+
+    Api\Controller\QualityListerController:
+        arguments: ['@quality_lister'] 
+        public: true
