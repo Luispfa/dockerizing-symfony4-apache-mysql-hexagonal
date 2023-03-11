@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\Bus\Query;
 
-use App\Domain\Bus\Query\QueryHandler;
 use App\Domain\QualityListAd;
 
-final class QualityListerQueryHandler implements QueryHandler
+final class QualityListerQueryHandler
 {
     private $qualityList;
 

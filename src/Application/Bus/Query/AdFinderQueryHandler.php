@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Application\Bus\Query;
 
 use App\Domain\AdId;
-use App\Domain\Bus\Query\QueryHandler;
 use App\Domain\GetAd;
 
-final class AdFinderQueryHandler implements QueryHandler
+final class AdFinderQueryHandler
 {
     private $getAd;
 
