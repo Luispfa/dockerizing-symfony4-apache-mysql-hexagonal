@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application;
 
+use App\Application\Bus\Command\ScoreCalculatorCommandHandler;
 use App\Application\Bus\Query\AdFinderQuery;
 use App\Application\Bus\Query\AdFinderQueryHandler;
 use App\Application\Response\AdsResponse;
@@ -12,19 +13,24 @@ use function Lambdish\Phunctional\map as PhunctionalMap;
 
 final class AdFinder
 {
-    private $queryHandler;
+    private $adFinderQueryHandler;
+    private $scoreCalculatorCommandHandler;
 
-    public function __construct(AdFinderQueryHandler $queryHandler)
-    {
-        $this->queryHandler = $queryHandler;
+    public function __construct(
+        AdFinderQueryHandler $adFinderQueryHandler,
+        ScoreCalculatorCommandHandler $scoreCalculatorCommandHandler
+    ) {
+        $this->adFinderQueryHandler = $adFinderQueryHandler;
+        $this->scoreCalculatorCommandHandler = $scoreCalculatorCommandHandler;
     }
 
     public function __invoke(int $id): AdsResponse
     {
-        $query = new AdFinderQuery($id);
+        $this->scoreCalculatorCommandHandler->__invoke();
 
-        $ad = $this->queryHandler->__invoke($query);
-        
+        $query = new AdFinderQuery($id);
+        $ad = $this->adFinderQueryHandler->__invoke($query);
+
         return new AdsResponse(...PhunctionalMap(AdResponse::toResponse(), [$ad]));
     }
 }

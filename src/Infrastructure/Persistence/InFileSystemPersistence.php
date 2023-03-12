@@ -34,7 +34,7 @@ final class InFileSystemPersistence implements SystemPersistenceRepository
             function (Ad $ad) use ($id) {
                 return $ad->getId() == $id;
             },
-            $this->ads
+            $this->getAds()
         );
     }
 
@@ -69,6 +69,7 @@ final class InFileSystemPersistence implements SystemPersistenceRepository
 
     private function getAdJson(): void
     {
+        $this->ads = [];
         if (is_file($this->jsonFile)) {
             $contentFile = file_get_contents($this->jsonFile);
             $data = json_decode($contentFile, true);

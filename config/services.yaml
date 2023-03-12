@@ -61,7 +61,7 @@ services:
 
     ad_finder:
         class: App\Application\AdFinder
-        arguments: ['@ad_finder_query_handler'] 
+        arguments: ['@ad_finder_query_handler', '@score_calculator_command_handler'] 
         public: true
 
     Api\Controller\GetAdFinderController:
@@ -134,11 +134,11 @@ services:
 
     public_lister:
         class: App\Application\PublicLister
-        arguments: ['@public_lister_query_handler'] 
+        arguments: ['@public_lister_query_handler', '@score_calculator_command_handler'] 
         public: true
 
     Api\Controller\PublicListerController:
-        arguments: ['@public_lister', '@score_calculator'] 
+        arguments: ['@public_lister'] 
         public: true
 
 
@@ -158,9 +158,9 @@ services:
 
     quality_lister:
         class: App\Application\QualityLister
-        arguments: ['@quality_lister_query_handler'] 
+        arguments: ['@quality_lister_query_handler', '@score_calculator_command_handler'] 
         public: true
 
     Api\Controller\QualityListerController:
-        arguments: ['@quality_lister', '@score_calculator'] 
+        arguments: ['@quality_lister'] 
         public: true
