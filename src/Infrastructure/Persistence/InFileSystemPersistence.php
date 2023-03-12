@@ -15,7 +15,7 @@ final class InFileSystemPersistence implements SystemPersistenceRepository
 {
     private $ads = [];
     private $pictures = [];
-    private $jsonFile = 'ads.json';
+    private $jsonFile = __DIR__ . '/../../../public/ads.json';
 
     public function getAds(): array
     {

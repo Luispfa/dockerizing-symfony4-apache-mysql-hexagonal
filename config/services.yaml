@@ -86,11 +86,6 @@ services:
         arguments: ['@get_all_ad'] 
         public: true
 
-    ad_all_finder:
-        class: App\Application\AdAllFinder
-        arguments: ['@ad_all_finder_query_handler'] 
-        public: true
-
     #
     # ScoreCalculator
     #
@@ -107,15 +102,15 @@ services:
 
     score_calculator:
         class: App\Application\ScoreCalculator
-        arguments: ['@score_calculator_command_handler'] 
+        arguments: ['@ad_all_finder_query_handler', '@score_calculator_command_handler'] 
         public: true
 
     Api\Controller\GetcoreCalculaterController:
-        arguments: ['@score_calculator', '@ad_all_finder'] 
+        arguments: ['@score_calculator'] 
         public: true
 
     Api\Command\ScoreCalculaterCommand:
-        arguments: ['@score_calculator', '@ad_all_finder'] 
+        arguments: ['@score_calculator'] 
         public: true
 
     #

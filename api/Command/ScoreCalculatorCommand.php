@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Api\Command;
 
-use App\Application\AdAllFinder;
 use App\Application\ScoreCalculator;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Command\Command;
@@ -19,13 +18,10 @@ class ScoreCalculatorCommand extends Command
     protected static $defaultDescription = 'Calcula score of Ads.';
 
     private $scoreCalculator;
-    private $adAllFinder;
 
-    public function __construct(ScoreCalculator $scoreCalculator, AdAllFinder $adAllFinder)
+    public function __construct(ScoreCalculator $scoreCalculator)
     {
         $this->scoreCalculator = $scoreCalculator;
-        $this->adAllFinder = $adAllFinder;
-
         parent::__construct();
     }
 
@@ -42,9 +38,7 @@ class ScoreCalculatorCommand extends Command
             throw new \LogicException('This command accepts only an instance of "ConsoleOutputInterface".');
         }
 
-        $this->scoreCalculator->__invoke();
-
-        $getAll = $this->adAllFinder->__invoke()->ads();
+        $getAll =$this->scoreCalculator->__invoke()->ads();
 
         $table = new Table($output);
         $table->setHeaders(['id', 'typology',  'houseSize', 'gardenSize', 'score']);
