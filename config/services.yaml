@@ -37,13 +37,13 @@ services:
         public: true
 
     system_repository:
-        # class: App\Infrastructure\Persistence\InFileSystemPersistence
-        class: App\Infrastructure\Persistence\DoctrineSystemPersistence
+        class: App\Infrastructure\Persistence\InFileSystemPersistence
+        # class: App\Infrastructure\Persistence\DoctrineSystemPersistence
         public: true
 
     App\Domain\SystemPersistenceRepository:
-        # alias: App\Infrastructure\Persistence\InFileSystemPersistence
-        alias: App\Infrastructure\Persistence\DoctrineSystemPersistence
+        alias: App\Infrastructure\Persistence\InFileSystemPersistence
+        # alias: App\Infrastructure\Persistence\DoctrineSystemPersistence
 
     #
     # AdFinder
@@ -138,7 +138,7 @@ services:
         public: true
 
     Api\Controller\PublicListerController:
-        arguments: ['@public_lister'] 
+        arguments: ['@public_lister', '@score_calculator'] 
         public: true
 
 

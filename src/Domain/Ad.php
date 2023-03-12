@@ -77,4 +77,33 @@ final class Ad extends AggregateRoot
         return $this->irrelevantSince;
     }
 
+    public  function toArray(): array
+    {
+        return  [
+            $this->getId()->value() => [
+                'id' => $this->getId()->value(),
+                'typology' => $this->getTypology()->value(),
+                'description' => $this->getDescription(),
+                'pictures' => $this->getPictures(),
+                'houseSize' => $this->getHouseSize(),
+                'gardenSize' => $this->getGardensize(),
+                'score' => $this->getScore(),
+                'irrelevantSince' => $this->getIrrelevantSince() ? $this->getIrrelevantSince()->format('Y-m-d H:i:s') : null
+            ]
+        ];
+    }
+
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            new AdId($data['id']),
+            new AdTypology($data['typology']),
+            $data['description'],
+            $data['pictures'],
+            $data['houseSize'],
+            $data['gardenSize'],
+            $data['score'],
+            $data['irrelevantSince'] ? new DateTimeImmutable($data['irrelevantSince']) : null
+        );
+    }
 }
