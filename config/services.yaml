@@ -162,5 +162,5 @@ services:
         public: true
 
     Api\Controller\QualityListerController:
-        arguments: ['@quality_lister'] 
+        arguments: ['@quality_lister', '@score_calculator'] 
         public: true
